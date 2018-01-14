@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="{{ url_for('static', filename='js/jquery-3.2.1.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/typed.min.js') }}"></script>
+    <title>Flask之微博单用户画像生成器</title>
+</head>
+<body>
+<!--提交微博id的表单-->
+<div>
+    <form action="/" method="post" id="search-form">
+        <input type="text" name="uid" class="search" placeholder="微博用户ID">
+        <input type="submit" class="submit" value="生成画像">
+    </form>
+</div>
+<!--下面是用户的展示信息-->
+<!--使用了模版的if语法,如果有才展示这块内容-->
+{% if profile_image_url %}
+<div style="text-align:center">
+    <div>
+        <img src="{{profile_image_url}}" alt="">
+        <div id="userinfo" style="padding:10px;line-height:25px">
+        </div>
+    </div>
+    <div>
+        <img id="personas">
+    </div>
+</div>
+<script>
+    $(function(){
+		$("#userinfo").typed({
+			strings: ["{{ userinfo|safe }}"],
+			typeSpeed: 50,
+			showCursor: false,
+			callback: function(){
+			    $('#personas').attr("src", "{{ personas }}");
+			}
+		});
+	});
+</script>
+{% endif %}
+</body>
+</html>
